@@ -1,7 +1,7 @@
 // components/Projects.jsx
 import { motion, useInView } from 'framer-motion'
 import { useRef } from 'react'
-import { ExternalLink } from 'lucide-react'
+import { ChartNoAxesCombined, ExternalLink, GlobeLock, Newspaper, SquareDashedBottomCode } from 'lucide-react'
 import { FaGithub as Github } from 'react-icons/fa'
 import SectionWrapper, { SectionHeader } from './SectionWrapper'
 
@@ -15,7 +15,7 @@ const PROJECTS = [
     live: null,
     gradient: 'from-amber-500/10 to-yellow-300/5',
     accent: '#D4AF37',
-    icon: '📰',
+    icon: <Newspaper />,
   },
   {
     title: 'Data Dashboard (Power BI)',
@@ -26,7 +26,7 @@ const PROJECTS = [
     live: null,
     gradient: 'from-blue-500/10 to-cyan-300/5',
     accent: '#3B82F6',
-    icon: '📊',
+    icon: <ChartNoAxesCombined />,
   },
   {
     title: 'Spring Boot Auth Service',
@@ -37,7 +37,7 @@ const PROJECTS = [
     live: null,
     gradient: 'from-emerald-500/10 to-teal-300/5',
     accent: '#10B981',
-    icon: '🔐',
+    icon: <GlobeLock />,
   },
   {
     title: 'Python Data Pipeline',
@@ -48,7 +48,7 @@ const PROJECTS = [
     live: null,
     gradient: 'from-violet-500/10 to-purple-300/5',
     accent: '#8B5CF6',
-    icon: '🐍',
+    icon: <SquareDashedBottomCode />,
   },
 ]
 
