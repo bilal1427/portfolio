@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+/* ── Enable class-based dark mode (Tailwind v4) ── */
+@variant dark (&:where(.dark, .dark *));
+
+/* ── Tailwind v4 theme ── */
+@theme {
+  --font-display: "Playfair Display", Georgia, serif;
+  --font-body: "DM Sans", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-gold-400: #D4AF37;
+  --color-gold-500: #C9A227;
+  --color-gold-600: #B8911A;
+
+  --color-ink-900: #0D0D0D;
+  --color-ink-800: #1A1A1A;
+  --color-ink-700: #2D2D2D;
+  --color-ink-600: #404040;
+  --color-ink-500: #595959;
+
+  --color-cream-50:  #FDFBF7;
+  --color-cream-100: #F9F5EC;
+  --color-cream-200: #F2EAD8;
+
+  --animate-float: float 6s ease-in-out infinite;
+  --animate-shimmer: shimmer 2.5s linear infinite;
+  --animate-cursor-blink: blink 1s step-end infinite;
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50%       { transform: translateY(-12px); }
+  }
+  @keyframes shimmer {
+    0%   { background-position: -200% center; }
+    100% { background-position:  200% center; }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+}
+
+/* ── Design tokens ── */
+:root {
+  --bg:         #FDFBF7;
+  --bg-2:       #F9F5EC;
+  --ink:        #0D0D0D;
+  --ink-muted:  #595959;
+  --gold:       #C9A227;
+  --border:     rgba(13, 13, 13, 0.1);
+}
+
+.dark {
+  --bg:         #0D0D0D;
+  --bg-2:       #1A1A1A;
+  --ink:        #F9F5EC;
+  --ink-muted:  #A0A0A0;
+  --gold:       #D4AF37;
+  --border:     rgba(249, 245, 236, 0.1);
+}
+
+/* ── Base ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  scroll-behavior: smooth;
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+::selection { background: var(--gold); color: #0D0D0D; }
+
+::-webkit-scrollbar       { width: 5px; }
+::-webkit-scrollbar-track  { background: var(--bg); }
+::-webkit-scrollbar-thumb  { background: var(--gold); border-radius: 99px; }
+
+/* ── Utilities ── */
+.text-gradient-gold {
+  background: linear-gradient(135deg, #D4AF37 0%, #F5D97A 50%, #C9A227 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: shimmer 3s linear infinite;
+}
+
+.noise-bg { position: relative; }
+.noise-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  opacity: 0.4;
+  z-index: 0;
+}
+
+.card-hover {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.card-hover:hover { transform: translateY(-6px); }
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Font helpers */
+.font-display { font-family: 'Playfair Display', Georgia, serif; }
+.font-body    { font-family: 'DM Sans', sans-serif; }
+.font-mono    { font-family: 'JetBrains Mono', monospace; }
