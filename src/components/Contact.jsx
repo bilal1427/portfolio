@@ -1,9 +1,14 @@
 // components/Contact.jsx
 import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
-import { Send, Mail, MapPin, CheckCircle } from 'lucide-react'
+import { Send, Mail, MapPin, CheckCircle, AlertCircle } from 'lucide-react'
 import { FaGithub, FaLinkedin } from 'react-icons/fa'
+import emailjs from '@emailjs/browser'
 import SectionWrapper, { SectionHeader } from './SectionWrapper'
+
+const SERVICE_ID  = 'bilalshaikh1427'
+const TEMPLATE_ID = 'template_hf9noeb'
+const PUBLIC_KEY  = 'GE7H05Vs6eufyEeBD'
 
 function InputField({ label, id, type = 'text', rows, placeholder, value, onChange, required }) {
   const Tag = rows ? 'textarea' : 'input'
@@ -33,26 +38,44 @@ export default function Contact() {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-80px' })
 
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
-  const [sent, setSent] = useState(false)
+  const [form, setForm]       = useState({ name: '', email: '', message: '' })
+  const [sent, setSent]       = useState(false)
   const [sending, setSending] = useState(false)
+  const [error, setError]     = useState(null)
 
   const handleChange = (field) => (e) => setForm(f => ({ ...f, [field]: e.target.value }))
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setSending(true)
-    // Simulate send (replace with EmailJS / Formspree in production)
-    setTimeout(() => {
-      setSending(false)
+    setError(null)
+
+    try {
+      await emailjs.send(
+        SERVICE_ID,
+        TEMPLATE_ID,
+        {
+          from_name:  form.name,
+          from_email: form.email,
+          message:    form.message,
+          reply_to:   form.email,
+        },
+        PUBLIC_KEY
+      )
       setSent(true)
       setForm({ name: '', email: '', message: '' })
-    }, 1500)
+    } catch (err) {
+      console.error('EmailJS error:', err)
+      setError('Something went wrong. Please try again or email me directly.')
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
     <SectionWrapper id="contact">
       <div ref={ref} className="grid md:grid-cols-2 gap-16">
+
         {/* Left — info */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
@@ -157,6 +180,19 @@ export default function Contact() {
                 onChange={handleChange('message')}
                 required
               />
+
+              {/* Error message */}
+              {error && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-500"
+                >
+                  <AlertCircle size={15} />
+                  <span className="font-body text-sm">{error}</span>
+                </motion.div>
+              )}
+
               <button
                 type="submit"
                 disabled={sending}
@@ -179,6 +215,7 @@ export default function Contact() {
             </form>
           )}
         </motion.div>
+
       </div>
     </SectionWrapper>
   )
